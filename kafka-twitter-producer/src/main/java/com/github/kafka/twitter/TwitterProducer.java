@@ -28,10 +28,15 @@ public class TwitterProducer {
     Logger logger = LoggerFactory.getLogger(TwitterProducer.class);
 
  //Your API Details
- String consumerKey = "consumerKey";
+ String consumerKey = "IsPJeZKSomZbB0BR3l0OFjuUO";
+    String consumerSecret = "FTAAod7qf1FsSDqc10P4HhJ7Lz1Uf9caCjJXOVaXomyeozbauK";
+    String token = "746868031-chmeriZNVkP3WHV1RuB9pHNUPElgpIXTFu0gBaFX";
+    String tokenSecret = "z8Zc5ZDe0l8iLj1rPvXF42BQqbKTcnYIbsuUw0g1NSXTB";
+
+/* String consumerKey = "consumerKey";
     String consumerSecret = "consumerSecret";
     String token = "746868031-token";
-    String tokenSecret = "tokenSecret";
+    String tokenSecret = "tokenSecret";*/
     List<String> terms = Lists.newArrayList("kafka");
 
     public static void main(String[] args) {
