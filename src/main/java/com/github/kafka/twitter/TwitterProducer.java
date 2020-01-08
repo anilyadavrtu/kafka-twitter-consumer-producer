@@ -26,14 +26,15 @@ import java.util.concurrent.TimeUnit;
  */
 public class TwitterProducer {
     Logger logger = LoggerFactory.getLogger(TwitterProducer.class);
-    String consumerKey = "IsPJeZKSomZbB0BR3l0OFjuUO";
-    String consumerSecret = "FTAAod7qf1FsSDqc10P4HhJ7Lz1Uf9caCjJXOVaXomyeozbauK";
-    String token = "746868031-chmeriZNVkP3WHV1RuB9pHNUPElgpIXTFu0gBaFX";
-    String tokenSecret = "z8Zc5ZDe0l8iLj1rPvXF42BQqbKTcnYIbsuUw0g1NSXTB";
+
+ //Your API Details
+ String consumerKey = "consumerKey";
+    String consumerSecret = "consumerSecret";
+    String token = "746868031-token";
+    String tokenSecret = "tokenSecret";
     List<String> terms = Lists.newArrayList("kafka");
 
     public static void main(String[] args) {
-        System.out.println("Hello");
         new TwitterProducer().run();
     }
 
@@ -44,7 +45,7 @@ public class TwitterProducer {
         Client client = createTwitterClient(msgQueue);
         client.connect();
         //create a kafka producer
-       KafkaProducer<String ,String> producer=createKafkaProducer();
+        KafkaProducer<String, String> producer = createKafkaProducer();
 
         //loop to send tweets to kafka
         // on a different thread, or multiple different threads....
@@ -61,8 +62,8 @@ public class TwitterProducer {
                 producer.send(new ProducerRecord<>("twitter_tweets", null, msg), new Callback() {
                     @Override
                     public void onCompletion(RecordMetadata recordMetadata, Exception e) {
-                        if(e!=null){
-                            logger.error("some bad happen",e);
+                        if (e != null) {
+                            logger.error("some bad happen", e);
                         }
                     }
                 });
@@ -78,7 +79,6 @@ public class TwitterProducer {
         Hosts hosebirdHosts = new HttpHosts(Constants.STREAM_HOST);
         StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint();
         // Optional: set up some followings and track terms
-        List<String> terms = Lists.newArrayList("INDIA");
         hosebirdEndpoint.trackTerms(terms);
 
         // These secrets should be read from a config file
@@ -98,7 +98,8 @@ public class TwitterProducer {
 
         return hosebirdClient;
     }
-    public KafkaProducer<String,String> createKafkaProducer(){
+
+    public KafkaProducer<String, String> createKafkaProducer() {
         String bootStrapServer = "127.0.0.1:9092";
         //create producer properties
         Properties properties = new Properties();
@@ -106,10 +107,14 @@ public class TwitterProducer {
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         //create safe producer
-        properties.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG,"true");
-        properties.setProperty(ProducerConfig.ACKS_CONFIG,"all");
-        properties.setProperty(ProducerConfig.RETRIES_CONFIG,Integer.toString(Integer.MAX_VALUE));
-        properties.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION,"5");
+        properties.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+        properties.setProperty(ProducerConfig.ACKS_CONFIG, "all");
+        properties.setProperty(ProducerConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE));
+        properties.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5");
+        //high throughput producer (at the expense of a bit of latency and CPU usages)
+        properties.setProperty(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
+        properties.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20");
+        properties.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, Integer.toString(32 * 1024));//32 Kb per batch
         KafkaProducer producer = new KafkaProducer<String, String>(properties);
         return producer;
     }
