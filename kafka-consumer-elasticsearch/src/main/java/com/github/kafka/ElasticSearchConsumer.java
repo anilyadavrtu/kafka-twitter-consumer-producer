@@ -35,8 +35,8 @@ public class ElasticSearchConsumer {
     public static RestHighLevelClient createClient() {
         //replace with your bonsai elastic search credentials
         String hostName = "kafka-twitter-3550458487.eu-central-1.bonsaisearch.net";
-        String userName = "luoi2xte20";
-        String password = "gihc18pno5";
+        String userName = "userName";
+        String password = "password";
         final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName, password));
 
