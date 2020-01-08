@@ -1,0 +1,58 @@
+### STS and Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.ipr
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+
+### Maven ###
+*.mvn
+mvnw*
+target/
+overlays/
+jacoco.exec
+src/main/resources/static/_css.generated/
+
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Logs:
+*.log
+*.out
+# git:
+*.orig
+# OS X
+.DS_Store
+# Emacs
+*~
+
+# chef deployment
+.kitchen
+.kitchen.local.yml
+.rakeTasks
+.remote-packages
+tool
+.metadata/
+.sonarlint/
+Servers/
+html-export
+.recommenders/
